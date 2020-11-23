@@ -30,18 +30,21 @@ class Analista:
     def quantidade(self, novo_quantidade):
         self.__clusters = novo_quantidade
 
-    def carregar_dados(self,):
+    def carregar_dados(self):
         base = pd.read_csv(self.alvo, header=1)
-        dados = base.iloc[:, [3, 5, 7, 8, 12]].values
+        return base
+
+    def equalizar_dados(self):
+        dados = self.carregar_dados().iloc[:, [3, 5, 7, 8, 12]].values
         scaler = StandardScaler()
         dados = scaler.fit_transform(dados)
         return dados
 
     def hierarquico(self):
-        eixo = self.carregar_dados()
+        eixo = self.equalizar_dados()
         hc = AgglomerativeClustering(n_clusters=self.clusters, affinity='euclidean', linkage='ward')
         previsoes = hc.fit_predict(eixo)
-        lista_resultado = np.column_stack((eixo, previsoes))
+        lista_resultado = np.column_stack((self.carregar_dados(), previsoes))
         plt.scatter(eixo[previsoes == 0, 3], eixo[previsoes == 0, 2], s=30, c='red', label='Cluster 0')
         plt.scatter(eixo[previsoes == 1, 3], eixo[previsoes == 1, 2], s=30, c='blue', label='Cluster 1')
         plt.scatter(eixo[previsoes == 2, 3], eixo[previsoes == 2, 2], s=30, c='green', label='Cluster 2')
