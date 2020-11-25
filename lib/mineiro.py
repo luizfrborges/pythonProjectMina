@@ -64,16 +64,16 @@ class Mineiro:
         with open(f'coleta_{self.alvo}_{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}_para_{self.quantidade}.csv', 'w') as arquivo:
             escrever = csv.writer(arquivo)
             escrever.writerow(
-                ['busca', 'usuario_nome', 'usuario_nome_exibido', 'usuario_id', 'usuario_data','usuario_data_timestamp'
-                    , 'usuario_local', 'usuario_seguidores', 'usuario_seguindo', 'texto_data','texto_data_timestamp'
-                    , 'texto', 'texto_tamanho'])
+                ['busca', 'usuario_nome', 'usuario_nome_exibido', 'usuario_id', 'usuario_data', 'usuario_data_timestamp'
+                    , 'usuario_local', 'usuario_seguidores', 'usuario_seguindo', 'usuario_favoritos', 'texto_data'
+                    , 'texto_data_timestamp', 'texto', 'texto_retweet', 'texto_favorito', 'texto_tamanho'])
             for tweet in self.minerar():
                 self.contador = self.contador + 1
                 print(f'Garimpando {self.alvo} - {self.contador} de {self.quantidade}')
                 # print(tweet.created_at)
                 #print(tweet.text)
                 # print(tweet.user)
-                # print(tweet._json)
+                #print(tweet._json)
                 # print(tweet._json['created_at'])
                 # print(tweet._json['user'])
                 #print(tweet._json['user']['name'])
@@ -83,7 +83,10 @@ class Mineiro:
                 #print(tweet._json['user']['created_at'])
                 # print(tweet._json['user']['followers_count'])
                 # print(tweet._json['user']['friends_count'])
+                #print(tweet._json['user']['favourites_count'])
                 # print(tweet._json['text'])
+                # print(tweet._json['retweet_count'])
+                # print(tweet._json['favorite_count'])
                 # print(tweet._json.keys())
                 usuario = tweet._json['user']
                 usuario_nome = tweet._json['user']['name']
@@ -93,8 +96,11 @@ class Mineiro:
                 usuario_data = tweet._json['user']['created_at']
                 usuario_seguidores = tweet._json['user']['followers_count']
                 usuario_seguindo = tweet._json['user']['friends_count']
+                usuario_favoritos = tweet._json['user']['favourites_count']
                 texto = tweet._json['text']
                 texto_data = tweet._json['created_at']
+                texto_retweet = tweet._json['retweet_count']
+                texto_favorito = tweet._json['favorite_count']
                 texto_tamanho = len(texto)
                 usuario_data_convert = datetime.strftime(datetime.strptime(usuario_data, '%a %b %d %H:%M:%S +0000 %Y'),
                                                          '%Y-%m-%d %H:%M:%S')
@@ -107,17 +113,17 @@ class Mineiro:
 
                 escrever.writerow(
                     [self.__alvo, usuario_nome, usuario_nome_exibido, usuario_id, usuario_data_convert,
-                     usuario_data_timestamp, usuario_local, usuario_seguidores, usuario_seguindo, texto_data_convert,
-                     texto_data_timestamp, texto, texto_tamanho])
+                     usuario_data_timestamp, usuario_local, usuario_seguidores, usuario_seguindo, usuario_favoritos,
+                     texto_data_convert, texto_data_timestamp, texto, texto_retweet, texto_favorito, texto_tamanho])
         print('Fim do Garimpo')
 
     def arquivo_treino(self):
-        with open(f'arquivo_de_treino.csv', 'w') as arquivo:
+        with open(f'arquivo_treino.csv', 'w') as arquivo:
             escrever = csv.writer(arquivo)
             escrever.writerow(
-                ['busca', 'usuario_nome', 'usuario_nome_exibido', 'usuario_id', 'usuario_data','usuario_data_timestamp'
-                    , 'usuario_local', 'usuario_seguidores', 'usuario_seguindo', 'texto_data','texto_data_timestamp'
-                    , 'texto', 'texto_tamanho'])
+                ['busca', 'usuario_nome', 'usuario_nome_exibido', 'usuario_id', 'usuario_data', 'usuario_data_timestamp'
+                    , 'usuario_local', 'usuario_seguidores', 'usuario_seguindo', 'usuario_favoritos', 'texto_data'
+                    , 'texto_data_timestamp', 'texto', 'texto_retweet', 'texto_favorito', 'texto_tamanho'])
             for tweet in self.minerar():
                 self.contador = self.contador + 1
                 print(f'Arquivando {self.alvo} - {self.contador} de {self.quantidade}')
@@ -129,8 +135,11 @@ class Mineiro:
                 usuario_data = tweet._json['user']['created_at']
                 usuario_seguidores = tweet._json['user']['followers_count']
                 usuario_seguindo = tweet._json['user']['friends_count']
+                usuario_favoritos = tweet._json['user']['favourites_count']
                 texto = tweet._json['text']
                 texto_data = tweet._json['created_at']
+                texto_retweet = tweet._json['retweet_count']
+                texto_favorito = tweet._json['favorite_count']
                 texto_tamanho = len(texto)
                 usuario_data_convert = datetime.strftime(datetime.strptime(usuario_data, '%a %b %d %H:%M:%S +0000 %Y'),
                                                          '%Y-%m-%d %H:%M:%S')
@@ -143,7 +152,7 @@ class Mineiro:
 
                 escrever.writerow(
                     [self.__alvo, usuario_nome, usuario_nome_exibido, usuario_id, usuario_data_convert,
-                     usuario_data_timestamp, usuario_local, usuario_seguidores, usuario_seguindo, texto_data_convert,
-                     texto_data_timestamp, texto, texto_tamanho])
+                     usuario_data_timestamp, usuario_local, usuario_seguidores, usuario_seguindo, usuario_favoritos,
+                     texto_data_convert, texto_data_timestamp, texto, texto_retweet, texto_favorito, texto_tamanho])
         print('Fim do Garimpo')
 
